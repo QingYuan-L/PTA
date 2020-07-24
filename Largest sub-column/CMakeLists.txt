@@ -5,4 +5,4 @@ project(main)
 #使用C++ 11标准
 set(CMAKE_CXX_STANDARD 11)
 #指定生成目标
-add_executable(main2.exe main.cpp)
+add_executable(Largest_sub-column.exe Largest_sub-column.cpp)
