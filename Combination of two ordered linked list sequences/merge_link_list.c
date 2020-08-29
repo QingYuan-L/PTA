@@ -29,7 +29,8 @@ int main()
 /* 你的代码将被嵌在这里 */
 List Read(){
     int a;
-    scanf("%d", &a);
+    scanf("%d",&a);
+    //fflush(stdin);
     PtrToNode new_list = (PtrToNode)malloc(sizeof(PtrToNode));
     PtrToNode temp = new_list;
     while(a--){
@@ -45,51 +46,49 @@ List Read(){
 }
 List Merge(List L1,List L2){
     PtrToNode new_list = (PtrToNode)malloc(sizeof(PtrToNode));
-    //new_list->Next=NULL;
+    new_list->Next=NULL;
     PtrToNode temp = new_list;
-    L1=L1->Next,L2=L2->Next;
-    while(L1!=NULL&&L2!=NULL){
-        PtrToNode new_node = (PtrToNode)malloc(sizeof(PtrToNode));
-        if(L1->Data<L2->Data){
-            new_node->Data=L1->Data;
-            temp->Next=new_node;
-            temp = new_node;
-            L1 =  L1->Next;
+    //使用原节点构建新的list
+    while(L1->Next!=NULL && L2->Next!=NULL){
+        if(L1->Next->Data<=L2->Next->Data){
+            temp->Next= L1->Next;
+            temp = temp ->Next;
+            L1->Next=L1->Next->Next;
             continue;
         }
-        if(L1->Data>L2->Data){
-            new_node->Data=L2->Data;
-            temp->Next=new_node;
-            temp = new_node;
-            L2=L2->Next;
+        if(L1->Next->Data>L2->Next->Data){
+            temp->Next= L2->Next;
+            temp = temp ->Next;
+            L2->Next=L2->Next->Next;
             continue;
         }
     }
-    while(L1!=NULL){
-        PtrToNode new_node = (PtrToNode)malloc(sizeof(PtrToNode));
-        new_node->Data=L1->Data;
-        temp->Next=new_node;
-        temp = new_node;
-        L1 =  L1->Next;
+    while (L1->Next!=NULL)
+    {
+        temp->Next = L1->Next;
+        temp = temp ->Next;
+        L1->Next=L1->Next->Next;
     }
-    while(L2!=NULL){
-        PtrToNode new_node = (PtrToNode)malloc(sizeof(PtrToNode));
-        new_node->Data=L2->Data;
-        temp->Next=new_node;
-        temp = new_node;
-        L2 =  L2->Next;
+    while (L2->Next!=NULL)
+    {
+        temp->Next = L2->Next;
+        temp = temp ->Next;
+        L2->Next=L2->Next->Next;
     }
+    temp->Next = NULL;
     return new_list;
 }
 
 void Print(List L){
-    if(L==NULL){
+    if(L->Next==NULL){
         printf("%s","NULL");
         return 0;
     }
     L=L->Next;
+    printf("%d",L->Data);
+    L=L->Next;
     while(L!=NULL){
-        printf("%d \n",L->Data);
+        printf(" %d",L->Data);
         L=L->Next;
     }
 }
