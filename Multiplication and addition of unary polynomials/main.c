@@ -18,9 +18,9 @@ void Attach_node(list L1,list L2);
 int main(int argc, char const *argv[]) {
     list L1 = Read();
     list L2 = Read();
-    //list mult_L = Mult(L1,L2);
+    list mult_L = Mult(L1,L2);
     list add_L = Add(L1,L2);
-    //Print_list(mult_L);
+    Print_list(mult_L);
     Print_list(add_L);
     return 0;
 }
@@ -55,7 +55,30 @@ list Read(){
 }
 
 list Mult(list L1,list L2){
-
+    list t1,t2;
+    t1 = L1->next,t2= L2->next;
+    list temp_L1=t1,temp_L2=t2;
+    list after_add = (list)malloc(sizeof(list));
+    list temp_add=after_add;
+    after_add->next = NULL;
+    while(temp_L1){
+        temp_L2=t2;
+        list after_mult = (list)malloc(sizeof(list));
+        after_mult->next =NULL;
+        list temp_mult=after_mult;
+        while (temp_L2)
+        {
+            list temp_node = (list)malloc(sizeof(list));
+            temp_node->coef = temp_L1->coef * temp_L2->coef;
+            temp_node->exp = temp_L1->exp + temp_L2 ->exp;
+            Attach_node(temp_mult,temp_node);
+            temp_mult = temp_mult->next;
+            temp_L2 = temp_L2 ->next;
+        }
+        temp_L1 = temp_L1->next;
+        after_add = Add(after_add,after_mult);
+    }
+    return after_add;
 }
 list Add(list L1,list L2){
     list t1,t2;
@@ -69,8 +92,10 @@ list Add(list L1,list L2){
         if(t1->exp==t2->exp){
             temp->exp = t1->exp;
             temp->coef = t1->coef+t2->coef;
-            Attach_node(rear,temp);
-            rear = rear ->next;
+            if(temp->coef!=0){
+                Attach_node(rear,temp);
+                rear = rear ->next;
+            }
             t1 = t1->next,t2 = t2->next;
         }else if(t1->exp>t2->exp)
         {
@@ -111,12 +136,19 @@ list Add(list L1,list L2){
 
 
 void Print_list(list L){
+    
     L = L->next;
-    printf("%d %d",L->coef,L->exp);
-    L = L->next;
-    while(L!=NULL){
-        printf(" %d %d",L->coef,L->exp);
-        L=L->next;
+    if(L==NULL){
+        printf("0 0\n");
+    }
+    else{
+        printf("%d %d",L->coef,L->exp);
+        L = L->next;
+        while(L!=NULL){
+            printf(" %d %d",L->coef,L->exp);
+            L=L->next;
+        }
+        printf("\n");
     }
 }
 
